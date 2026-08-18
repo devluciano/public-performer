@@ -125,14 +125,5 @@ O Eloquence Pro foi construído utilizando tecnologias modernas voltadas para pe
 
 ---
 
-## 🌐 Informações Adicionais
-
-Este projeto está integrado ao [Lovable](https://lovable.dev).
-
-*   **Aplicativo Produção**: [public-performer.lovable.app](https://public-performer.lovable.app)
-*   **Editor Lovable**: [Acessar Projeto no Lovable](https://lovable.dev/projects/2854a0b8-1232-48f0-b64a-3aad5bfb5a5f)
-
----
-
 ### ✍️ Autor
 Desenvolvido por **Luciano Silva** — *FullStack Developer* na **LeanCode Sistemas**.
