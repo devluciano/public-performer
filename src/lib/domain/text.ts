@@ -42,7 +42,7 @@ export function parseSections(content: string): ScriptSection[] {
 
 /** Palavras-chave para o modo treino (destaques **assim** ou termos mais relevantes). */
 export function extractKeywords(text: string): string[] {
-  const marked = [...text.matchAll(/\*\*(.+?)\*\*/g)].map((m) => m[1].trim());
+  const marked = [...text.matchAll(/\*\*(.+?)\*\*/g)].map((m) => (m[1] ?? "").trim());
   if (marked.length) return marked;
   const stop = new Set(
     "a o e de da do das dos que para com uma um em no na os as por se ao mais como mas não nós você sua seu isso este esta".split(
