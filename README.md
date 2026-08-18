@@ -1,6 +1,6 @@
 # Eloquence Pro
 
-Crie um aplicativo web responsivo de Teleprompter para Treino de Oratória, com interface moderna, profissional, minimalista e otimizada para leitura durante apresentações, discursos, aulas, reuniões, vídeos e treinamentos.
+Aplicativo web responsivo de Teleprompter para Treino de Oratória, com interface moderna, profissional, minimalista e otimizada para leitura durante apresentações, discursos, aulas, reuniões, vídeos e treinamentos.
 
 O objetivo principal do aplicativo é permitir que o usuário escreva ou importe um roteiro e pratique sua apresentação utilizando um teleprompter, enquanto acompanha métricas de desempenho relacionadas à fala, ritmo, tempo e evolução.
 
