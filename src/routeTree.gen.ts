@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
+import { Route as EstatisticasRouteImport } from './routes/estatisticas'
 import { Route as HistoricoIndexRouteImport } from './routes/historico.index'
 import { Route as HistoricoSessionIdRouteImport } from './routes/historico.$sessionId'
 import { Route as RoteirosIndexRouteImport } from './routes/roteiros.index'
@@ -19,6 +21,16 @@ import { Route as TreinoIdRouteImport } from './routes/treino.$id'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EstatisticasRoute = EstatisticasRouteImport.update({
+  id: '/estatisticas',
+  path: '/estatisticas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoricoIndexRoute = HistoricoIndexRouteImport.update({
@@ -49,6 +61,8 @@ const TreinoIdRoute = TreinoIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/estatisticas': typeof EstatisticasRoute
   '/historico/$sessionId': typeof HistoricoSessionIdRoute
   '/roteiros/$id': typeof RoteirosIdRoute
   '/treino/$id': typeof TreinoIdRoute
@@ -57,6 +71,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/estatisticas': typeof EstatisticasRoute
   '/historico/$sessionId': typeof HistoricoSessionIdRoute
   '/roteiros/$id': typeof RoteirosIdRoute
   '/treino/$id': typeof TreinoIdRoute
@@ -66,6 +82,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/estatisticas': typeof EstatisticasRoute
   '/historico/$sessionId': typeof HistoricoSessionIdRoute
   '/roteiros/$id': typeof RoteirosIdRoute
   '/treino/$id': typeof TreinoIdRoute
@@ -76,6 +94,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/configuracoes'
+    | '/estatisticas'
     | '/historico/$sessionId'
     | '/roteiros/$id'
     | '/treino/$id'
@@ -84,6 +104,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/configuracoes'
+    | '/estatisticas'
     | '/historico/$sessionId'
     | '/roteiros/$id'
     | '/treino/$id'
@@ -92,6 +114,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/configuracoes'
+    | '/estatisticas'
     | '/historico/$sessionId'
     | '/roteiros/$id'
     | '/treino/$id'
@@ -101,6 +125,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
+  EstatisticasRoute: typeof EstatisticasRoute
   HistoricoSessionIdRoute: typeof HistoricoSessionIdRoute
   RoteirosIdRoute: typeof RoteirosIdRoute
   TreinoIdRoute: typeof TreinoIdRoute
@@ -115,6 +141,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/estatisticas': {
+      id: '/estatisticas'
+      path: '/estatisticas'
+      fullPath: '/estatisticas'
+      preLoaderRoute: typeof EstatisticasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historico/': {
@@ -157,6 +197,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
+  EstatisticasRoute: EstatisticasRoute,
   HistoricoSessionIdRoute: HistoricoSessionIdRoute,
   RoteirosIdRoute: RoteirosIdRoute,
   TreinoIdRoute: TreinoIdRoute,
