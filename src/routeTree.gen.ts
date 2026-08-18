@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RoteirosIndexRouteImport } from './routes/roteiros.index'
 import { Route as TreinoIdRouteImport } from './routes/treino.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoteirosIndexRoute = RoteirosIndexRouteImport.update({
+  id: '/roteiros/',
+  path: '/roteiros/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TreinoIdRoute = TreinoIdRouteImport.update({
@@ -26,27 +32,31 @@ const TreinoIdRoute = TreinoIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/treino/$id': typeof TreinoIdRoute
+  '/roteiros/': typeof RoteirosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/treino/$id': typeof TreinoIdRoute
+  '/roteiros': typeof RoteirosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/treino/$id': typeof TreinoIdRoute
+  '/roteiros/': typeof RoteirosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/treino/$id'
+  fullPaths: '/' | '/treino/$id' | '/roteiros/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/treino/$id'
-  id: '__root__' | '/' | '/treino/$id'
+  to: '/' | '/treino/$id' | '/roteiros'
+  id: '__root__' | '/' | '/treino/$id' | '/roteiros/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TreinoIdRoute: typeof TreinoIdRoute
+  RoteirosIndexRoute: typeof RoteirosIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roteiros/': {
+      id: '/roteiros/'
+      path: '/roteiros'
+      fullPath: '/roteiros/'
+      preLoaderRoute: typeof RoteirosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/treino/$id': {
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TreinoIdRoute: TreinoIdRoute,
+  RoteirosIndexRoute: RoteirosIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
