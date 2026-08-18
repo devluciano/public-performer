@@ -46,7 +46,7 @@ function SettingsPage() {
                 min={1}
                 max={14}
                 step={1}
-                onValueChange={([v]) => updateProfile({ goalSessionsPerWeek: v })}
+                onValueChange={(vals) => updateProfile({ goalSessionsPerWeek: vals[0] ?? profile.goalSessionsPerWeek })}
               />
             </div>
           </CardContent>
@@ -106,7 +106,7 @@ function SliderRow({
           {suffix}
         </span>
       </div>
-      <Slider value={[value]} min={min} max={max} step={step} onValueChange={([v]) => onChange(v)} />
+      <Slider value={[value]} min={min} max={max} step={step} onValueChange={(vals) => onChange(vals[0] ?? value)} />
     </div>
   );
 }

@@ -35,8 +35,8 @@ export function parseSections(content: string): ScriptSection[] {
   if (matches.length === 0) return [{ title: "Roteiro", body: content }];
   return matches.map((m, i) => {
     const start = (m.index ?? 0) + m[0].length;
-    const end = i + 1 < matches.length ? matches[i + 1].index : content.length;
-    return { title: m[1].trim(), body: content.slice(start, end).trim() };
+    const end = i + 1 < matches.length ? (matches[i + 1]!.index ?? content.length) : content.length;
+    return { title: (m[1] ?? "").trim(), body: content.slice(start, end).trim() };
   });
 }
 

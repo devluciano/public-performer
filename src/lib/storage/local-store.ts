@@ -27,7 +27,7 @@ let state: State = emptyState();
 let hydrated = false;
 const listeners = new Set<() => void>();
 
-function read<T>(key: string, schema: z.ZodType<T>, fallback: T): T {
+function read<T>(key: string, schema: z.ZodType<T, z.ZodTypeDef, unknown>, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
     const raw = window.localStorage.getItem(key);
