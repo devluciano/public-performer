@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Copy, Play, Plus, Search, Trash2 } from "lucide-react";
+import { Copy, Play, Plus, Search, Trash2, Pencil } from "lucide-react";
 import { AppShell } from "@/components/app/app-shell";
 import { EmptyState } from "@/components/app/stat-card";
 import { Button } from "@/components/ui/button";
@@ -53,13 +53,10 @@ function Library() {
       title="Meus roteiros"
       subtitle="Crie, organize e prepare seus discursos"
       actions={
-        <Button
-          onClick={() => {
-            const script = createScript();
-            void navigate({ to: "/roteiros/$id", params: { id: script.id } });
-          }}
-        >
-          <Plus className="size-4" /> Novo roteiro
+        <Button asChild>
+          <Link to="/roteiros/criar">
+            <Plus className="size-4" /> Novo roteiro
+          </Link>
         </Button>
       }
     >
@@ -134,10 +131,15 @@ function Library() {
                       </span>
                     </div>
                   </dl>
-                  <div className="flex flex-wrap gap-2 pt-1">
+                  <div className="flex items-center gap-1.5 pt-1">
                     <Button size="sm" asChild>
                       <Link to="/treino/$id" params={{ id: script.id }}>
                         <Play className="size-4" /> Treinar
+                      </Link>
+                    </Button>
+                    <Button size="sm" variant="outline" asChild>
+                      <Link to="/roteiros/$id" params={{ id: script.id }}>
+                        <Pencil className="size-4" /> Editar
                       </Link>
                     </Button>
                     <Button size="sm" variant="outline" onClick={() => duplicateScript(script.id)}>
@@ -146,7 +148,7 @@ function Library() {
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="text-destructive hover:text-destructive"
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive p-2"
                       onClick={() => deleteScript(script.id)}
                       aria-label={`Excluir ${script.title}`}
                     >

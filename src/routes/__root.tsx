@@ -6,8 +6,10 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useNavigate,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { useAppState } from "@/lib/storage/app-state";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -92,7 +94,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -123,6 +125,17 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { user, initialized } = useAppState();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && initialized) {
+      const path = window.location.pathname;
+      if (!user && path !== "/login" && path !== "/cadastro" && !path.startsWith("/controle/")) {
+        void navigate({ to: "/login" });
+      }
+    }
+  }, [user, initialized, navigate]);
 
   return (
     <QueryClientProvider client={queryClient}>

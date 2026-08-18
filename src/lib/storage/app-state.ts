@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { hydrate, newId, store } from "./local-store";
+import { obterDadosIniciais } from "@/lib/services/db-api";
 import { recordings } from "./recordings";
 import {
   profileSchema,
@@ -35,7 +36,7 @@ export function useAppState() {
     [state.sessions],
   );
 
-  return { scripts, sessions, profile: state.profile };
+  return { scripts, sessions, profile: state.profile, user: state.user, initialized: state.initialized };
 }
 
 export function useScript(id: string | undefined): Script | undefined {
@@ -176,6 +177,29 @@ export function useActions() {
     store.set((s) => ({ ...s, profile: profileSchema.parse({ ...s.profile, ...patch }) }));
   }, []);
 
+  const login = useCallback((user: any) => {
+    store.set((s) => ({ ...s, user }));
+    if (typeof window !== "undefined") {
+      obterDadosIniciais({ data: { usuarioId: user.id } }).then((dados) => {
+        store.set((s) => ({
+          ...s,
+          scripts: dados.scripts,
+          sessions: dados.sessions,
+          profile: dados.perfil,
+        }));
+      });
+    }
+  }, []);
+
+  const logout = useCallback(() => {
+    store.set((s) => ({
+      ...s,
+      user: null,
+      scripts: [],
+      sessions: [],
+    }));
+  }, []);
+
   return {
     createScript,
     updateScript,
@@ -187,5 +211,7 @@ export function useActions() {
     deleteSession,
     deleteRecording,
     updateProfile,
+    login,
+    logout,
   };
 }

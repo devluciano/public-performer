@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import {
   BarChart3,
   Files,
@@ -41,6 +42,20 @@ export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
+function getSessionsThisWeekCount(sessions: any[]): number {
+  const now = new Date();
+  const day = now.getDay();
+  // Segunda-feira da semana atual
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+  const startOfWeek = new Date(now.setDate(diff));
+  startOfWeek.setHours(0, 0, 0, 0);
+
+  return sessions.filter((s) => {
+    const sessionDate = new Date(s.startedAt);
+    return sessionDate >= startOfWeek;
+  }).length;
+}
+
 function Dashboard() {
   const { scripts, sessions, profile } = useAppState();
   const { createScript } = useActions();
@@ -50,16 +65,45 @@ function Dashboard() {
   const level = levelOf(profile.points);
   const streak = streakDays(sessions);
 
+  // Notificações locais no navegador para a meta semanal
+  useEffect(() => {
+    if (typeof window === "undefined" || !("Notification" in window)) return;
+    
+    if (Notification.permission === "default") {
+      void Notification.requestPermission();
+    } else if (Notification.permission === "granted") {
+      const count = getSessionsThisWeekCount(sessions);
+      const goal = profile.goalSessionsPerWeek || 3;
+      
+      if (count < goal) {
+        const lastNotified = sessionStorage.getItem("oratoria.notified.week");
+        if (!lastNotified) {
+          try {
+            new Notification("Eloquence Pro", {
+              body: `Você treinou ${count} de ${goal} vezes esta semana. Que tal praticar um roteiro hoje? 🎙️`,
+            });
+            sessionStorage.setItem("oratoria.notified.week", "true");
+          } catch {
+            /* certas plataformas mobiles bloqueiam notificações sem interação direta */
+          }
+        }
+      }
+    }
+  }, [sessions, profile.goalSessionsPerWeek]);
+
   const novoTreino = () => {
     const target = scripts[0];
     if (target) void navigate({ to: "/treino/$id", params: { id: target.id } });
     else {
-      const script = createScript();
-      void navigate({ to: "/roteiros/$id", params: { id: script.id } });
+      void navigate({ to: "/roteiros/criar" });
     }
   };
 
   const delta = last && previous ? last.metrics.score - previous.metrics.score : 0;
+  
+  const sessionsThisWeek = getSessionsThisWeekCount(sessions);
+  const goal = profile.goalSessionsPerWeek || 3;
+  const goalProgress = Math.min(100, (sessionsThisWeek / goal) * 100);
 
   return (
     <AppShell
@@ -151,6 +195,21 @@ function Dashboard() {
                 {level.next ? `${level.next.min - profile.points} pts para ${level.next.title}` : "Nível máximo alcançado"}
               </p>
             </div>
+
+            {/* Progresso da Meta Semanal */}
+            <div className="border-t border-border/60 pt-3">
+              <div className="flex items-baseline justify-between">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Meta Semanal</p>
+                <span className="text-xs font-bold text-primary">{sessionsThisWeek} de {goal} treinos</span>
+              </div>
+              <Progress className="mt-2 h-1.5" value={goalProgress} />
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                {sessionsThisWeek >= goal 
+                  ? "🎉 Meta semanal batida! Excelente trabalho." 
+                  : `Faltam ${goal - sessionsThisWeek} treinos esta semana.`}
+              </p>
+            </div>
+
             <div className="grid grid-cols-3 gap-2 text-center">
               <MiniStat label="Treinos" value={String(sessions.length)} />
               <MiniStat label="Sequência" value={`${streak}d`} />

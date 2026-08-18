@@ -1,15 +1,49 @@
-import type { FeedbackItem, SessionMetrics, TrainingSession } from "@/lib/domain/types";
+import type { FeedbackItem, SessionMetrics, TrainingSession, Script } from "@/lib/domain/types";
 import { formatDuration } from "@/lib/domain/text";
+import { analisarDiscursoIA } from "@/lib/services/db-api";
 
 /**
- * Feedback heurístico local. A assinatura é assíncrona de propósito para que
- * uma análise por IA (Lovable AI) possa substituir esta implementação sem
- * alterar as telas.
+ * Feedback Inteligente. Tenta chamar o Gemini AI para uma análise aprofundada.
+ * Se a API falhar ou não estiver configurada, reverte para a heurística local.
  */
 export async function generateFeedback(
   metrics: SessionMetrics,
   previous: TrainingSession | undefined,
+  script?: Script,
+  textoDito?: string
 ): Promise<FeedbackItem[]> {
+  // Se tivermos o roteiro original, tentamos rodar a análise por IA do Gemini
+  if (script?.content) {
+    try {
+      const feedbackIA = await analisarDiscursoIA({
+        data: {
+          roteiroOriginal: script.content,
+          textoDito: textoDito || script.content, // Usa a transcrição real ou faz fallback para o roteiro
+          duracaoSegundos: Math.round(metrics.durationMs / 1000),
+          pausas: metrics.pauses,
+        }
+      });
+
+      if (feedbackIA && feedbackIA.length > 0) {
+        // Adicionar feedback de comparação com o treino anterior
+        if (previous) {
+          const delta = metrics.score - previous.metrics.score;
+          feedbackIA.push({
+            kind: delta >= 0 ? "forte" : "melhoria",
+            text:
+              delta >= 0
+                ? `Evolução de ${delta} pontos em relação ao treino anterior (${formatDuration(previous.metrics.durationMs)}).`
+                : `Queda de ${Math.abs(delta)} pontos em relação ao treino anterior. Repita o mesmo roteiro para consolidar.`,
+          });
+        }
+        return feedbackIA;
+      }
+    } catch (e) {
+      console.warn("Falha ao gerar feedback com Gemini AI, usando heurística local:", e);
+    }
+  }
+
+  // Fallback: Feedback heurístico local
   const items: FeedbackItem[] = [];
 
   if (metrics.wpm >= 120 && metrics.wpm <= 160) {
@@ -57,3 +91,4 @@ export async function generateFeedback(
 
   return items;
 }
+

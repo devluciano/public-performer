@@ -10,17 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as EstatisticasRouteImport } from './routes/estatisticas'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as UsuariosRouteImport } from './routes/usuarios'
+import { Route as ControleIdRouteImport } from './routes/controle.$id'
 import { Route as HistoricoIndexRouteImport } from './routes/historico.index'
 import { Route as HistoricoSessionIdRouteImport } from './routes/historico.$sessionId'
 import { Route as RoteirosIndexRouteImport } from './routes/roteiros.index'
 import { Route as RoteirosIdRouteImport } from './routes/roteiros.$id'
+import { Route as RoteirosCriarRouteImport } from './routes/roteiros.criar'
 import { Route as TreinoIdRouteImport } from './routes/treino.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CadastroRoute = CadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
@@ -31,6 +41,21 @@ const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
 const EstatisticasRoute = EstatisticasRouteImport.update({
   id: '/estatisticas',
   path: '/estatisticas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UsuariosRoute = UsuariosRouteImport.update({
+  id: '/usuarios',
+  path: '/usuarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ControleIdRoute = ControleIdRouteImport.update({
+  id: '/controle/$id',
+  path: '/controle/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoricoIndexRoute = HistoricoIndexRouteImport.update({
@@ -53,6 +78,11 @@ const RoteirosIdRoute = RoteirosIdRouteImport.update({
   path: '/roteiros/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RoteirosCriarRoute = RoteirosCriarRouteImport.update({
+  id: '/roteiros/criar',
+  path: '/roteiros/criar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TreinoIdRoute = TreinoIdRouteImport.update({
   id: '/treino/$id',
   path: '/treino/$id',
@@ -61,20 +91,30 @@ const TreinoIdRoute = TreinoIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cadastro': typeof CadastroRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/estatisticas': typeof EstatisticasRoute
+  '/login': typeof LoginRoute
+  '/usuarios': typeof UsuariosRoute
+  '/controle/$id': typeof ControleIdRoute
   '/historico/$sessionId': typeof HistoricoSessionIdRoute
   '/roteiros/$id': typeof RoteirosIdRoute
+  '/roteiros/criar': typeof RoteirosCriarRoute
   '/treino/$id': typeof TreinoIdRoute
   '/historico/': typeof HistoricoIndexRoute
   '/roteiros/': typeof RoteirosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cadastro': typeof CadastroRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/estatisticas': typeof EstatisticasRoute
+  '/login': typeof LoginRoute
+  '/usuarios': typeof UsuariosRoute
+  '/controle/$id': typeof ControleIdRoute
   '/historico/$sessionId': typeof HistoricoSessionIdRoute
   '/roteiros/$id': typeof RoteirosIdRoute
+  '/roteiros/criar': typeof RoteirosCriarRoute
   '/treino/$id': typeof TreinoIdRoute
   '/historico': typeof HistoricoIndexRoute
   '/roteiros': typeof RoteirosIndexRoute
@@ -82,10 +122,15 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cadastro': typeof CadastroRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/estatisticas': typeof EstatisticasRoute
+  '/login': typeof LoginRoute
+  '/usuarios': typeof UsuariosRoute
+  '/controle/$id': typeof ControleIdRoute
   '/historico/$sessionId': typeof HistoricoSessionIdRoute
   '/roteiros/$id': typeof RoteirosIdRoute
+  '/roteiros/criar': typeof RoteirosCriarRoute
   '/treino/$id': typeof TreinoIdRoute
   '/historico/': typeof HistoricoIndexRoute
   '/roteiros/': typeof RoteirosIndexRoute
@@ -94,30 +139,45 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cadastro'
     | '/configuracoes'
     | '/estatisticas'
+    | '/login'
+    | '/usuarios'
+    | '/controle/$id'
     | '/historico/$sessionId'
     | '/roteiros/$id'
+    | '/roteiros/criar'
     | '/treino/$id'
     | '/historico/'
     | '/roteiros/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cadastro'
     | '/configuracoes'
     | '/estatisticas'
+    | '/login'
+    | '/usuarios'
+    | '/controle/$id'
     | '/historico/$sessionId'
     | '/roteiros/$id'
+    | '/roteiros/criar'
     | '/treino/$id'
     | '/historico'
     | '/roteiros'
   id:
     | '__root__'
     | '/'
+    | '/cadastro'
     | '/configuracoes'
     | '/estatisticas'
+    | '/login'
+    | '/usuarios'
+    | '/controle/$id'
     | '/historico/$sessionId'
     | '/roteiros/$id'
+    | '/roteiros/criar'
     | '/treino/$id'
     | '/historico/'
     | '/roteiros/'
@@ -125,10 +185,15 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CadastroRoute: typeof CadastroRoute
   ConfiguracoesRoute: typeof ConfiguracoesRoute
   EstatisticasRoute: typeof EstatisticasRoute
+  LoginRoute: typeof LoginRoute
+  UsuariosRoute: typeof UsuariosRoute
+  ControleIdRoute: typeof ControleIdRoute
   HistoricoSessionIdRoute: typeof HistoricoSessionIdRoute
   RoteirosIdRoute: typeof RoteirosIdRoute
+  RoteirosCriarRoute: typeof RoteirosCriarRoute
   TreinoIdRoute: typeof TreinoIdRoute
   HistoricoIndexRoute: typeof HistoricoIndexRoute
   RoteirosIndexRoute: typeof RoteirosIndexRoute
@@ -143,6 +208,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cadastro': {
+      id: '/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof CadastroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/configuracoes': {
       id: '/configuracoes'
       path: '/configuracoes'
@@ -155,6 +227,27 @@ declare module '@tanstack/react-router' {
       path: '/estatisticas'
       fullPath: '/estatisticas'
       preLoaderRoute: typeof EstatisticasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/usuarios': {
+      id: '/usuarios'
+      path: '/usuarios'
+      fullPath: '/usuarios'
+      preLoaderRoute: typeof UsuariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/controle/$id': {
+      id: '/controle/$id'
+      path: '/controle/$id'
+      fullPath: '/controle/$id'
+      preLoaderRoute: typeof ControleIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historico/': {
@@ -185,6 +278,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoteirosIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/roteiros/criar': {
+      id: '/roteiros/criar'
+      path: '/roteiros/criar'
+      fullPath: '/roteiros/criar'
+      preLoaderRoute: typeof RoteirosCriarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/treino/$id': {
       id: '/treino/$id'
       path: '/treino/$id'
@@ -197,10 +297,15 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CadastroRoute: CadastroRoute,
   ConfiguracoesRoute: ConfiguracoesRoute,
   EstatisticasRoute: EstatisticasRoute,
+  LoginRoute: LoginRoute,
+  UsuariosRoute: UsuariosRoute,
+  ControleIdRoute: ControleIdRoute,
   HistoricoSessionIdRoute: HistoricoSessionIdRoute,
   RoteirosIdRoute: RoteirosIdRoute,
+  RoteirosCriarRoute: RoteirosCriarRoute,
   TreinoIdRoute: TreinoIdRoute,
   HistoricoIndexRoute: HistoricoIndexRoute,
   RoteirosIndexRoute: RoteirosIndexRoute,

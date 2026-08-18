@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { ArrowLeft, CheckCircle2, Lightbulb, Trash2, TriangleAlert } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import { ArrowLeft, CheckCircle2, Lightbulb, Trash2, TriangleAlert, Printer } from "lucide-react";
 import { AppShell } from "@/components/app/app-shell";
 import { StatCard } from "@/components/app/stat-card";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,28 @@ function SessionAnalysis() {
   const { updateSession, deleteRecording } = useActions();
   const session = sessions.find((s) => s.id === sessionId);
   const [mediaUrl, setMediaUrl] = useState<string | null>(null);
+
+  const sessionMetrics = session?.metrics;
+
+  const sectionDurations = useMemo(() => {
+    if (!session || !sessionMetrics || !(sessionMetrics as any).sectionTimes || (sessionMetrics as any).sectionTimes.length === 0) return [];
+    const sectionTimes = (sessionMetrics as any).sectionTimes as { title: string; timestampMs: number }[];
+    const durations: { title: string; durationMs: number }[] = [];
+    
+    for (let i = 0; i < sectionTimes.length; i++) {
+      const current = sectionTimes[i];
+      const next = i < sectionTimes.length - 1 ? sectionTimes[i + 1] : null;
+      if (!current) continue;
+      
+      const start = current.timestampMs;
+      const end = next ? next.timestampMs : sessionMetrics.durationMs;
+      durations.push({
+        title: current.title,
+        durationMs: Math.max(0, end - start),
+      });
+    }
+    return durations;
+  }, [session, sessionMetrics]);
 
   useEffect(() => {
     let url: string | null = null;
@@ -65,11 +87,16 @@ function SessionAnalysis() {
       title="Análise do treino"
       subtitle={`${session.scriptTitle} · ${new Date(session.startedAt).toLocaleString("pt-BR")}`}
       actions={
-        <Button variant="outline" asChild>
-          <Link to="/historico">
-            <ArrowLeft className="size-4" /> Histórico
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2 print-hidden">
+          <Button variant="outline" onClick={() => window.print()}>
+            <Printer className="size-4 mr-2" /> PDF / Imprimir
+          </Button>
+          <Button variant="outline" asChild>
+            <Link to="/historico">
+              <ArrowLeft className="size-4" /> Histórico
+            </Link>
+          </Button>
+        </div>
       }
     >
       <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -139,6 +166,31 @@ function SessionAnalysis() {
           </Card>
         </div>
       </div>
+      {sectionDurations.length > 0 && (
+        <Card className="mt-4">
+          <CardHeader>
+            <CardTitle className="text-base">Tempo por Seção do Roteiro</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {sectionDurations.map((section, idx) => {
+              const percentage = Math.round((section.durationMs / m.durationMs) * 100);
+              return (
+                <div key={idx} className="space-y-1.5">
+                  <div className="flex justify-between text-xs font-semibold">
+                    <span>{section.title}</span>
+                    <span className="text-muted-foreground">
+                      {formatDuration(section.durationMs)} ({percentage}%)
+                    </span>
+                  </div>
+                  <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
+                    <div className="h-full bg-primary" style={{ width: `${percentage}%` }} />
+                  </div>
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+      )}
     </AppShell>
   );
 }
