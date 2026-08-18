@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HistoricoIndexRouteImport } from './routes/historico.index'
+import { Route as HistoricoSessionIdRouteImport } from './routes/historico.$sessionId'
 import { Route as RoteirosIndexRouteImport } from './routes/roteiros.index'
 import { Route as RoteirosIdRouteImport } from './routes/roteiros.$id'
 import { Route as TreinoIdRouteImport } from './routes/treino.$id'
@@ -17,6 +19,16 @@ import { Route as TreinoIdRouteImport } from './routes/treino.$id'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoricoIndexRoute = HistoricoIndexRouteImport.update({
+  id: '/historico/',
+  path: '/historico/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoricoSessionIdRoute = HistoricoSessionIdRouteImport.update({
+  id: '/historico/$sessionId',
+  path: '/historico/$sessionId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RoteirosIndexRoute = RoteirosIndexRouteImport.update({
@@ -37,35 +49,62 @@ const TreinoIdRoute = TreinoIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/historico/$sessionId': typeof HistoricoSessionIdRoute
   '/roteiros/$id': typeof RoteirosIdRoute
   '/treino/$id': typeof TreinoIdRoute
+  '/historico/': typeof HistoricoIndexRoute
   '/roteiros/': typeof RoteirosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/historico/$sessionId': typeof HistoricoSessionIdRoute
   '/roteiros/$id': typeof RoteirosIdRoute
   '/treino/$id': typeof TreinoIdRoute
+  '/historico': typeof HistoricoIndexRoute
   '/roteiros': typeof RoteirosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/historico/$sessionId': typeof HistoricoSessionIdRoute
   '/roteiros/$id': typeof RoteirosIdRoute
   '/treino/$id': typeof TreinoIdRoute
+  '/historico/': typeof HistoricoIndexRoute
   '/roteiros/': typeof RoteirosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/roteiros/$id' | '/treino/$id' | '/roteiros/'
+  fullPaths:
+    | '/'
+    | '/historico/$sessionId'
+    | '/roteiros/$id'
+    | '/treino/$id'
+    | '/historico/'
+    | '/roteiros/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/roteiros/$id' | '/treino/$id' | '/roteiros'
-  id: '__root__' | '/' | '/roteiros/$id' | '/treino/$id' | '/roteiros/'
+  to:
+    | '/'
+    | '/historico/$sessionId'
+    | '/roteiros/$id'
+    | '/treino/$id'
+    | '/historico'
+    | '/roteiros'
+  id:
+    | '__root__'
+    | '/'
+    | '/historico/$sessionId'
+    | '/roteiros/$id'
+    | '/treino/$id'
+    | '/historico/'
+    | '/roteiros/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HistoricoSessionIdRoute: typeof HistoricoSessionIdRoute
   RoteirosIdRoute: typeof RoteirosIdRoute
   TreinoIdRoute: typeof TreinoIdRoute
+  HistoricoIndexRoute: typeof HistoricoIndexRoute
   RoteirosIndexRoute: typeof RoteirosIndexRoute
 }
 
@@ -76,6 +115,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historico/': {
+      id: '/historico/'
+      path: '/historico'
+      fullPath: '/historico/'
+      preLoaderRoute: typeof HistoricoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historico/$sessionId': {
+      id: '/historico/$sessionId'
+      path: '/historico/$sessionId'
+      fullPath: '/historico/$sessionId'
+      preLoaderRoute: typeof HistoricoSessionIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/roteiros/': {
@@ -104,8 +157,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HistoricoSessionIdRoute: HistoricoSessionIdRoute,
   RoteirosIdRoute: RoteirosIdRoute,
   TreinoIdRoute: TreinoIdRoute,
+  HistoricoIndexRoute: HistoricoIndexRoute,
   RoteirosIndexRoute: RoteirosIndexRoute,
 }
 export const routeTree = rootRouteImport
