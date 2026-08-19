@@ -106,19 +106,36 @@ O Eloquence Pro foi construído utilizando tecnologias modernas voltadas para pe
 
 ### Pré-requisitos
 *   [Node.js](https://nodejs.org/) (Versão LTS recomendada)
-*   Gerenciador de pacotes `npm` ou `bun`
+*   [MySQL](https://www.mysql.com/) (Servidor rodando localmente)
+*   Gerenciador de pacotes `npm`
 
 ### Executando o Projeto
-1. Clone o repositório:
+
+1. **Clone o repositório:**
    ```sh
    git clone <url-do-repositorio>
    cd public-performer
    ```
-2. Instale as dependências:
+
+2. **Configure as Variáveis de Ambiente:**
+   Copie o arquivo de exemplo para o seu arquivo local de ambiente:
+   ```sh
+   cp .env.example .env
+   ```
+   Abra o arquivo `.env` gerado e configure suas credenciais do banco de dados MySQL e a sua chave de API do Gemini em `CHAVE_GEMINI`.
+
+3. **Configure o Banco de Dados:**
+   Importe a estrutura do banco de dados MySQL contida no arquivo [`schema.sql`](file:///c:/projetos/public-performer/schema.sql) utilizando o console do MySQL ou seu cliente de preferência (ex: DBeaver, MySQL Workbench):
+   ```sh
+   mysql -u seu_usuario -p < schema.sql
+   ```
+
+4. **Instale as dependências:**
    ```sh
    npm install
    ```
-3. Inicie o servidor de desenvolvimento:
+
+5. **Inicie o servidor de desenvolvimento:**
    ```sh
    npm run dev
    ```
@@ -127,3 +144,4 @@ O Eloquence Pro foi construído utilizando tecnologias modernas voltadas para pe
 
 ### ✍️ Autor
 Desenvolvido por **Luciano Silva** — *FullStack Developer* na **LeanCode Sistemas**.
+
