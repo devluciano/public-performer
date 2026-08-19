@@ -226,8 +226,10 @@ function TeleprompterRoute() {
 
   const finish = useCallback(async () => {
     if (!script || !settings || finishing) return;
+    console.log("[DEBUG finish] Iniciando finalização do treino...");
     setFinishing(true);
     setRunning(false);
+    console.log("[DEBUG finish] Parando reconhecimento de fala...");
     speech.stop();
     const tracker = trackerRef.current ?? new SessionTracker();
     const rawMetrics = tracker.finish(wordsRead, totalWords);
@@ -235,9 +237,17 @@ function TeleprompterRoute() {
       ...rawMetrics,
       sectionTimes: sectionTimesRef.current,
     };
-    if (recorder.status === "recording" || recorder.status === "paused") recorder.stop();
+    if (recorder.status === "recording" || recorder.status === "paused") {
+      console.log("[DEBUG finish] Parando gravação de mídia...");
+      recorder.stop();
+    }
     const previous = sessions.find((s) => s.scriptId === script.id);
+    
+    console.log("[DEBUG finish] Solicitando geração de feedback (Gemini)...");
     const feedback = await generateFeedback(metrics, previous, script, speech.transcript);
+    console.log("[DEBUG finish] Feedback gerado:", feedback);
+
+    console.log("[DEBUG finish] Salvando sessão localmente...");
     const session = await saveSession({
       scriptId: script.id,
       scriptTitle: script.title,
@@ -247,7 +257,10 @@ function TeleprompterRoute() {
       feedback,
       recording: recorder.result ? { blob: recorder.result.blob, kind: recorder.result.kind } : null,
     });
+    console.log("[DEBUG finish] Sessão salva:", session);
+
     toast.success("Treino salvo com sucesso");
+    console.log("[DEBUG finish] Redirecionando para histórico...");
     void navigate({ to: "/historico/$sessionId", params: { sessionId: session.id } });
   }, [finishing, navigate, recorder, saveSession, script, sessions, settings, totalWords, wordsRead, speech]);
 
