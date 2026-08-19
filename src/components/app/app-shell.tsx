@@ -56,7 +56,7 @@ export function AppShell({
             <Mic className="size-5" />
           </span>
           <div className="leading-tight">
-            <p className="font-display text-sm font-semibold">Prompter</p>
+            <p className="font-display text-sm font-semibold">Eloquence Pro</p>
             <p className="text-xs text-muted-foreground">Treino de oratória</p>
           </div>
         </div>

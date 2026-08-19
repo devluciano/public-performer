@@ -26,13 +26,13 @@ import { levelOf, streakDays } from "@/lib/services/gamification";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Prompter — Teleprompter para treino de oratória" },
+      { title: "Eloquence Pro — Teleprompter para treino de oratória" },
       {
         name: "description",
         content:
           "Escreva roteiros, apresente com teleprompter e acompanhe ritmo, pausas, WPM e evolução dos seus treinos de oratória.",
       },
-      { property: "og:title", content: "Prompter — Teleprompter para treino de oratória" },
+      { property: "og:title", content: "Eloquence Pro — Teleprompter para treino de oratória" },
       {
         property: "og:description",
         content: "Roteiros, teleprompter, cronômetro, gravação, métricas e feedback para treinar sua fala.",

@@ -15,9 +15,9 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/configuracoes")({
   head: () => ({
     meta: [
-      { title: "Configurações — Prompter" },
+      { title: "Configurações — Eloquence Pro" },
       { name: "description", content: "Defina padrões de velocidade, fonte e metas semanais para os seus treinos de oratória." },
-      { property: "og:title", content: "Configurações — Prompter" },
+      { property: "og:title", content: "Configurações — Eloquence Pro" },
       { property: "og:description", content: "Preferências do teleprompter e metas de treino." },
     ],
   }),

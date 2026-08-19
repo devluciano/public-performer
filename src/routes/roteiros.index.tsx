@@ -15,9 +15,9 @@ import { useActions, useAppState } from "@/lib/storage/app-state";
 export const Route = createFileRoute("/roteiros/")({
   head: () => ({
     meta: [
-      { title: "Biblioteca de roteiros — Prompter" },
+      { title: "Biblioteca de roteiros — Eloquence Pro" },
       { name: "description", content: "Organize, filtre e gerencie todos os seus roteiros de apresentação em um só lugar." },
-      { property: "og:title", content: "Biblioteca de roteiros — Prompter" },
+      { property: "og:title", content: "Biblioteca de roteiros — Eloquence Pro" },
       { property: "og:description", content: "Roteiros por categoria, duração estimada, uso e melhor desempenho." },
     ],
   }),

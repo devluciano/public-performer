@@ -80,10 +80,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Prompter — Teleprompter para treino de oratória" },
+      { title: "Eloquence Pro — Teleprompter para treino de oratória" },
       { name: "description", content: "Teleprompter com métricas de fala, gravação e feedback para treinar sua oratória." },
-      { name: "author", content: "Prompter" },
-      { property: "og:title", content: "Prompter — Teleprompter para treino de oratória" },
+      { name: "author", content: "Eloquence Pro" },
+      { property: "og:title", content: "Eloquence Pro — Teleprompter para treino de oratória" },
       { property: "og:description", content: "Roteiros, teleprompter, cronômetro, métricas e evolução da sua fala." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
