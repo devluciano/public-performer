@@ -2,7 +2,7 @@
 @source "../src";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@variant dark (&:is(.dark *));
 
 @theme inline {
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
@@ -115,7 +115,10 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, .font-display {
+  h1,
+  h2,
+  h3,
+  .font-display {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
@@ -141,10 +144,10 @@
   }
 
   /* Ocultar elementos de navegação e botões */
-  header, 
-  nav, 
-  aside, 
-  button, 
+  header,
+  nav,
+  aside,
+  button,
   .no-print,
   .print-hidden,
   a[href^="/roteiros"] {
@@ -162,7 +165,7 @@
   }
 
   /* Formatar cards do relatório para visual limpo de papel */
-  .card, 
+  .card,
   [class*="border"] {
     border: 1px solid #ccc !important;
     box-shadow: none !important;
@@ -176,9 +179,13 @@
     color: #555 !important;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: black !important;
     page-break-after: avoid;
   }
 }
-
