@@ -440,7 +440,7 @@ export const analisarDiscursoIA = createServerFn({ method: "POST" })
 
       const { GoogleGenerativeAI } = await import("@google/generative-ai");
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
 
       const prompt = `Você é um avaliador de oratória profissional. Analise o treino de oratória do usuário.
 Roteiro original:
